@@ -18,12 +18,16 @@
         gap: 5px;
         place-items: center;
       }
-      #allDyr {
+      #allRet {
         max-width: 400px;
-        margin-bottom: 0.5rem;
-        border: solid 2px orange;
-        border-radius: 26px;
-        box-shadow: 10px 10px 8px #888888;
+        /* margin-bottom: 0.5rem; */
+        border: solid 1.5px gray;
+        /* border-radius: 26px; */
+        /* box-shadow: 10px 10px 8px #888888; */
+        background-image: url("textur_2.webp");
+        margin: 5rem;
+        font-family:Arial, Helvetica, sans-serif;
+          sans-serif;
       }
       h2 {
         text-align: center;
@@ -33,84 +37,113 @@
         text-align: center;
       }
       .valgt {
-        background-color: orange;
+        background-color: rgba(238, 104, 15, 0.61);
+      }
+      header {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1r 1fr;
+        grid-template-rows: 1fr;
+        /* background-color: rgba(238, 104, 15, 0.774); */
+        background-image: url("textur_2.jpg");
+      }
+
+
+      .logo {
+        text-align: center;
+        font-size: 4.5rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        color:black;
+      }
+      .menu_knapper {
+        text-align: center;
+        grid-row: 2/3;
+      }
+      h3 {
+        font-size: 2rem;
+        text-align: center;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        color: black;
+      }
+      body {
+        background-image: url("star_2.jpg");
       }
     </style>
   </head>
   <header>
-    <nav>
-      <button data-troende="alle" class="valgt">Alle</button>
-      <button data-troende="ja">Troende</button>
-      <button data-troende="nej">Ikke troende</button>
-      <button data-troende="tvivler">Tvivler</button>
+    <h1 class="logo">BISTRO BABUSHAK</h1>
+    <h3>Alle</h3>
+    <nav class="menu_knapper">
+      <button data-kategori="alle" class="valgt">Alle</button>
+      <button data-kategori="forretter">Forretter</button>
+      <button data-kategori="hovedretter">Hovedretter</button>
+      <button data-kategori="desserter">Desserter</button>
+      <button data-kategori="drikkevarer">Drikkevarer</button>
     </nav>
   </header>
   <body>
     <section class="data-container"></section>
     <template>
-      <article id="allDyr">
-        <h2 class="fornavn"></h2>
-        <h2 class="efternavn"></h2>
+      <article id="allRet">
         <img src="" alt="" />
-        <p class="bday"></p>
-        <p class="email"></p>
-        <p class="hobby"></p>
-        <p class="titel"></p>
-        <p class="troende"></p>
+        <h2 class="retten"></h2>
+        <p class="beskrivelse"></p>
+        <p class="pris"></p>
       </article>
     </template>
   </body>
 
   <script>
+    const header = document.querySelector("header h3");
     const container = document.querySelector(".data-container");
-    const dyrTemplate = document.querySelector("template");
-    const url = "https://persongalleri-5d3e.restdb.io/rest/persongalleri";
+    const menuTemplate = document.querySelector("template");
+    const url = "https://babushka-dd8a.restdb.io/rest/menu";
     const options = {
       headers: {
-        "x-apikey": "600fe9211346a1524ff12e31",
+        "x-apikey": "600ec2fb1346a1524ff12de4",
       },
     };
 
     window.addEventListener("DOMContentLoaded", start);
-    let personer;
+    let retter;
     let filter = "alle";
 
     function start() {
       console.log("siden er loaded");
       const filterKnapper = document.querySelectorAll("nav button");
       filterKnapper.forEach((knap) =>
-        knap.addEventListener("click", filterPersoner)
+        knap.addEventListener("click", filterRetter)
       );
-      function filterPersoner() {
-        filter = this.dataset.troende;
+      function filterRetter() {
+        filter = this.dataset.kategori;
         document.querySelector(".valgt").classList.remove("valgt");
         this.classList.add("valgt");
+        header.textContent = this.textContent;
 
         vis();
       }
       async function hentdata() {
         const resultat = await fetch(url, options);
-        personer = await resultat.json();
+        retter = await resultat.json();
         vis();
+        console.log(personer);
       }
 
       function vis() {
-        // console.log(personer);
-
         container.textContent = "";
 
-        personer.forEach((hverPerson) => {
-          if (filter == hverPerson.troende || filter == "alle") {
-            const klon = dyrTemplate.cloneNode(true).content;
+        retter.forEach((hverRet) => {
+          if (filter == hverRet.kategori || filter == "alle") {
+            const klon = menuTemplate.cloneNode(true).content;
 
-            klon.querySelector(".fornavn").textContent = hverPerson.fornavn;
-            klon.querySelector(".efternavn").textContent = hverPerson.efternavn;
-            klon.querySelector(".bday").textContent = hverPerson.fødselsdag;
-            klon.querySelector(".email").textContent = hverPerson.email;
-            klon.querySelector(".hobby").textContent = hverPerson.hobby;
-            klon.querySelector(".titel").textContent = hverPerson.titel;
-            klon.querySelector(".troende").textContent = hverPerson.troende;
-            klon.querySelector("img").src = "faces/" + hverPerson.billede;
+            klon.querySelector(".retten").textContent = hverRet.navn;
+            klon.querySelector(".beskrivelse").textContent =
+              hverRet.kortbeskrivelse;
+            klon.querySelector(".pris").textContent = hverRet.pris + " kr.";
+
+            klon.querySelector("img").src =
+              "medium/" + hverRet.billednavn + "-md.jpg";
             container.appendChild(klon);
           }
         });
