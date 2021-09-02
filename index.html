@@ -10,7 +10,6 @@
         display: block;
         width: 400px;
         object-fit: cover;
-        place-items: center;
       }
       .data-container {
         display: grid;
@@ -22,7 +21,6 @@
         max-width: 400px;
         border: solid 1.5px gray;
 
-        background-image: url("textur_2.webp");
         margin: 5rem;
         font-family: Arial, Helvetica, sans-serif;
       }
@@ -83,7 +81,7 @@
 
       #popup article {
         width: 80vw;
-        height: 64vh;
+        height: 75vh;
         margin: 4rem auto;
         border-radius: 26px;
         padding: 12px;
@@ -92,12 +90,13 @@
 
       #popup img {
         object-fit: contain;
-        padding-left: 33%;
+        margin-inline: auto;
+        width: 40%;
       }
       .knap_popup {
-        position: fixed;
-        left: 88px;
-        top: 49px;
+        position: relative;
+        left: -23px;
+        top: -26px;
         font-size: 1.5rem;
         color: black;
       }
@@ -113,13 +112,15 @@
       <button data-kategori="alle" class="valgt">Alle</button>
       <button data-kategori="forretter">Forretter</button>
       <button data-kategori="hovedretter">Hovedretter</button>
+      <button data-kategori="sideorders">Sideorders</button>
       <button data-kategori="desserter">Desserter</button>
       <button data-kategori="drikkevarer">Drikkevarer</button>
     </nav>
 
     <section id="popup">
-      <button class="knap_popup">X</button>
       <article class="article_popup">
+        <button class="knap_popup">X</button>
+
         <img src="" alt="" />
         <h2 class="retten"></h2>
         <p class="beskrivelse"></p>
